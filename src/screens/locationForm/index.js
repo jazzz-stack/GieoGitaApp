@@ -687,23 +687,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
-  textHeader: {
-    top: -8,
-    position: 'absolute',
-    backgroundColor: 'white',
-    zIndex: 100,
-    // elevation:5,
-    width: ms(100),
-    left: 20,
-  },
-  haderStyle: {
-    // color: 'black',
-    fontSize: 16,
-    color: 'black',
-    fontWeight: 'bold',
-    backgroundColor: '#fff',
-    // elevation:2
-  },
+
   textHeader: {
     top: -11,
     position: 'absolute',

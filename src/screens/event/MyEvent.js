@@ -230,23 +230,7 @@ const styles = StyleSheet.create({
     width: 100,
     left: 20,
   },
-  haderStyle: {
-    // color: 'black',
-    fontSize: 16,
-    color: 'black',
-    fontWeight: 'bold',
-    backgroundColor: '#fff',
-    // elevation:2
-  },
-  textHeader: {
-    top: -14,
-    position: 'absolute',
-    backgroundColor: 'white',
-    zIndex: 100,
-    // elevation:5,
-    width: 100,
-    left: 20,
-  },
+
   textINput: {
     marginLeft: 15,
   },
