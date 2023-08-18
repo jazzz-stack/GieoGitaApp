@@ -364,7 +364,6 @@ const styles = StyleSheet.create({
 
     alignContent: 'center',
 
-    alignSelf: 'center',
 
     marginTop: 10,
 

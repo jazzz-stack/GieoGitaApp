@@ -192,7 +192,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#CCCCCC',
     justifyContent: 'center',
-    alignSelf: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: 20,

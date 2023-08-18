@@ -129,7 +129,6 @@ const LocationForm = ({route}) => {
     publicEvent: item.publicEvent,
     start: item.start,
     end: item.end,
-    organizer: item.organizer,
     phone: item.phone,
     email: item.email,
     organizer: item.organizer,
@@ -141,7 +140,6 @@ const LocationForm = ({route}) => {
     instraction: item.instraction,
     place_type: selectedValue,
     pin: pin,
-    address: address,
     CountryState: selectedState?.name,
     public_event: selectIconOne,
     country: country?.name,
@@ -156,7 +154,6 @@ const LocationForm = ({route}) => {
     publicEvent: item.publicEvent,
     start: item.start,
     end: item.end,
-    organizer: item.organizer,
     phone: item.phone,
     email: item.email,
     organizer: item.organizer,
@@ -168,7 +165,6 @@ const LocationForm = ({route}) => {
     instraction: item.instraction,
     place_type: selectedValue,
     pin: pin,
-    address: address,
     CountryState: selectedState?.name,
     public_event: selectIconOne,
     country: country?.name,
@@ -687,23 +683,8 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
-  textHeader: {
-    top: -8,
-    position: 'absolute',
-    backgroundColor: 'white',
-    zIndex: 100,
-    // elevation:5,
-    width: ms(100),
-    left: 20,
-  },
-  haderStyle: {
-    // color: 'black',
-    fontSize: 16,
-    color: 'black',
-    fontWeight: 'bold',
-    backgroundColor: '#fff',
-    // elevation:2
-  },
+
+
   textHeader: {
     top: -11,
     position: 'absolute',
