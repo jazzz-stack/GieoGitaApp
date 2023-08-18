@@ -74,7 +74,6 @@ const HomeScreen = () => {
               }}>
               अभियान के बारे में
             </Text>
-            <Text>check for changes</Text>
 
             <Text
               style={{
