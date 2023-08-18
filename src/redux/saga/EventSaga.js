@@ -136,7 +136,7 @@ const AllEventSaga = function* () {
       status:"true",
       joing_links:"link",
       plateform:"youtube",
-      content:"new content"
+      content:data.payload.instraction
     }
     console.log("show updated list",_data)
     try {

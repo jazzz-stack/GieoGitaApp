@@ -20,16 +20,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getCountryName, getEventType, getStateName} from '../../redux/actions';
 import {navigationRef} from '../../../App';
 import CustomCountrySelector from '../../Components/CustomCountrySelector';
-import { ms } from 'react-native-size-matters';
+import {ms} from 'react-native-size-matters';
 
 const EventForm = ({route}) => {
-  
   const [name, setName] = useState('');
-  const [organizer, setOrganizer] = useState('')
+  const [organizer, setOrganizer] = useState('');
   const [selectIconOne, setSelectIconOne] = useState(null);
   const [selectIcontwo, setSelectIcontwo] = useState(null);
   const [selectedValue, setSelectedValue] = useState(null);
   const [frequency, setFrequency] = useState(null);
+  const [platform, setPlatform] = useState(null)
   const [startDate, setstartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -41,41 +41,37 @@ const EventForm = ({route}) => {
   const [number, setNumber] = useState('');
   const [email, setEmail] = useState('');
   const [formValid, setFormValid] = useState(false);
-const [check, setCheck] = useState(false)
-const [laoder, setLaoder] = useState(false)
+  const [check, setCheck] = useState(false);
+  const [laoder, setLaoder] = useState(false);
+  const [joiningLink, setJoiningLink] = useState('')
 
+  // if data is comming for edit
 
-// if data is comming for edit
+  let routeData = route.params;
+  console.log('show routeData', routeData);
+  // alert(selectedValue)
 
-let routeData = route.params;
-console.log("show routeData",routeData)
+  useEffect(() => {
+    if (routeData != null) {
+      setName(routeData.name);
+      setSelectIconOne(routeData.public_event);
+      setDescription(routeData.content);
+      setstartDate(routeData.create_at);
+      setEmail(routeData.email);
+      setEndDate(routeData.end);
+      setSelectedValue(routeData.event_type);
+      setFrequency(routeData.frequency);
+      setOrganizer(routeData.organizer);
+      setParticipant(routeData.participants);
+      setNumber(routeData.phone);
+      setPhonepublic(routeData.phone_visible);
+    }
+  }, [routeData]);
 
-useEffect(()=>{
-if(routeData!=null){
-    setName(routeData.name)
-    setSelectIconOne(routeData.public_event)
-    setDescription(routeData.content)
-    setstartDate(routeData.create_at)
-    setEmail(routeData.email)
-    setEndDate(routeData.end)
-    setSelectedValue(routeData.event_type)
-    setFrequency(routeData.frequency)
-    setOrganizer(routeData.organizer)
-    setParticipant(routeData.participants)
-    setNumber(routeData.phone)
-    setPhonepublic(routeData.phone_visible)
-
-    
-}
-
-},[routeData])
-
-// if data is comming for edit
-
-  
+  // if data is comming for edit
 
   const pickerRef = useRef();
-  console.log("frequencjfksljf",frequency)
+  console.log('frequencjfksljf', frequency);
   const [countryCode, setCountryCode] = useState({
     code: 'IN',
     icon: 'https://projects.cityinnovates.in/gieo_gita/public/assets/img/flags/in.png',
@@ -105,6 +101,16 @@ if(routeData!=null){
     // dispatch(getEventPlace());
   }, []);
   const eventtypeData = useSelector(state => state.EventReducer.eventTypeData);
+  const newItem = {id: 0, name: 'select'};
+
+  useEffect(() => {
+    if(eventtypeData[0].name!="select"){
+      eventtypeData.unshift(newItem);
+    }
+   
+
+  }, [eventtypeData]);
+
   console.log('show event type data00000', eventtypeData);
 
   const showDatePicker = () => {
@@ -133,30 +139,35 @@ if(routeData!=null){
     {name: 'My Event', value: 'item2', id: 2},
   ];
   const dataFrequency = [
-    
-    {id: 1,name: '--Selectt--'},
-    {id: 2,name: 'One Time'},
+    {id: 1, name: '--Selectt--'},
+    {id: 2, name: 'One Time'},
     {name: 'Daily', id: 3},
     {name: 'Weekly', id: 4},
     {name: 'Monthly', id: 5},
     {name: 'Random', id: 6},
   ];
-
+  const platformData = [
+    {id: 1, name: '--Selectt--'},
+    {id: 2, name: 'Zoom'},
+    {name: 'WhatsApp', id: 3},
+    {name: 'YouTube', id: 4},
+    {name: 'Other', id: 5},
+  ];
   const handlefirstCheckBox = () => {
     setSelectIconOne('1');
     setSelectIcontwo('0');
   };
   const handleSecondCheckBox = () => {
-    setSelectIcontwo("1");
-    setSelectIconOne("0");
+    setSelectIcontwo('1');
+    setSelectIconOne('0');
   };
   const handlphonePublicCheckbox = () => {
-    setPhonepublic("1");
-    setCheckboxSlect("0");
+    setPhonepublic('1');
+    setCheckboxSlect('0');
   };
   const handlephonepublicSecondCheckbox = () => {
-    setCheckboxSlect("1");
-    setPhonepublic("0");
+    setCheckboxSlect('1');
+    setPhonepublic('0');
   };
   console.log('show eventType', selectedValue);
   let formData = {
@@ -168,15 +179,13 @@ if(routeData!=null){
     participants: participant,
     phonepublic: phonepublic,
     personPerDay: personPerDay,
-    end:endDate,
-    organizer:organizer,
-    phone:number,
-    email:email,
-    organizer:organizer,
-    instraction:description,
-    short_content:description,
-    
-
+    end: endDate,
+    organizer: organizer,
+    phone: number,
+    email: email,
+    organizer: organizer,
+    instraction: description,
+    short_content: description,
   };
 
   let formDataEdit = {
@@ -188,84 +197,71 @@ if(routeData!=null){
     participants: participant,
     phonepublic: phonepublic,
     personPerDay: personPerDay,
-    end:endDate,
-    organizer:organizer,
-    phone:number,
-    email:email,
-    organizer:organizer,
-    instraction:description,
-    short_content:description,
-    ID:routeData?.id,
-    Editable:routeData?.editable
-
+    end: endDate,
+    organizer: organizer,
+    phone: number,
+    email: email,
+    organizer: organizer,
+    instraction: description,
+    short_content: description,
+    ID: routeData?.id,
+    Editable: routeData?.editable,
   };
 
   const handleONsubmit = () => {
-    setLaoder(true)
-    setCheck(true)
+    setLaoder(true);
+    setCheck(true);
 
-    if(name.length<=2){
-        setLaoder(false)
-      Alert.alert("please Enter Event Name")
-    }
-    else if(selectIconOne==null){
-      setLaoder(false)
-      Alert.alert("please list as prublic event or not")
-  }
-    else if(selectedValue==null){
-        setLaoder(false)
-        Alert.alert("please envent type")
-    }else if(frequency==null){
-        setLaoder(false)
-        Alert.alert("please Enter frequency fileds")
-
-    }else if(description.length<=2){
-        setLaoder(false)
-        Alert.alert("please Enter description fileds")
-    }
-    else if(participant==''){
-      setLaoder(false)
-      Alert.alert("please Enter Participants fileds")
-    }
-    else if(personPerDay==null){
-      setLaoder(false)
-      Alert.alert("please Enter person per day fileds")
-    }
-    else if(phonepublic==null){
-      setLaoder(false)
-      Alert.alert("please tell you want to public your phone no ")
-    }
-    else if(number.length<10){
-      setLaoder(false)
-      Alert.alert("please Enter Proper number")
-    }
-    else if(email==""){
-      setLaoder(false)
-      Alert.alert("please Enter email fileds")
-    }
-    else{
-      setLaoder(false)
-      if(routeData?.editable){
+    if (name.length <= 2) {
+      setLaoder(false);
+      Alert.alert('please Enter Event Name');
+    } else if (selectIconOne == null) {
+      setLaoder(false);
+      Alert.alert('please list as prublic event or not');
+    } else if (selectedValue == null ) {
+      setLaoder(false);
+      Alert.alert('please envent type');
+    } else if (frequency == null) {
+      setLaoder(false);
+      Alert.alert('please Enter frequency fileds');
+    } else if (description.length <= 2) {
+      setLaoder(false);
+      Alert.alert('please Enter description fileds');
+    } else if (participant == '') {
+      setLaoder(false);
+      Alert.alert('please Enter Participants fileds');
+    } else if (personPerDay == null) {
+      setLaoder(false);
+      Alert.alert('please Enter person per day fileds');
+    } else if (phonepublic == null) {
+      setLaoder(false);
+      Alert.alert('please tell you want to public your phone no ');
+    } else if (number.length < 10) {
+      setLaoder(false);
+      Alert.alert('please Enter Proper number');
+    } else if (email == '') {
+      setLaoder(false);
+      Alert.alert('please Enter email fileds');
+    } else {
+      setLaoder(false);
+      if (routeData?.editable) {
         // alert('update')
         navigationRef.navigate('formPlace', formDataEdit);
-      }else{
+      } else {
         // alert('create')
         navigationRef.navigate('formPlace', formData);
       }
-       
     }
- 
-   
   };
 
   return (
     <View style={styles.contaier}>
       <HeaderPage />
-   {laoder&&   <ActivityIndicator size={'large'}  color={"red"}/>}
+      {laoder && <ActivityIndicator size={'large'} color={'red'} />}
       <ScrollView style={styles.mainContianer}>
         <Text style={styles.goupText}>Add Group or Event</Text>
         <View style={{marginTop: 20}}>
-          <View style={{...styles.textHeader,width:ms(100)}}>
+          <View style={{...styles.textHeader, width: ms(100)}}>
             <Text style={styles.haderStyle}>Event Name</Text>
           </View>
           <View style={styles.firstTextinput}>
@@ -277,7 +273,9 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& name==""&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && name == '' && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         <View style={{marginTop: 20}}>
           <View style={{...styles.textHeader, width: ms(156)}}>
             <Text style={styles.haderStyle}>List as public event</Text>
@@ -313,7 +311,9 @@ if(routeData!=null){
             </TouchableOpacity>
           </View>
         </View>
-        { check&& selectIconOne==null&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && selectIconOne == null && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         <View style={{marginTop: 20}}>
           <View style={styles.textHeader}>
             <Text style={styles.haderStyle}>Event Type</Text>
@@ -321,13 +321,53 @@ if(routeData!=null){
           <View style={styles.firstTextinput}>
             <CustomPicker
               ref={pickerRef}
-              data={eventtypeData?eventtypeData:[]}
+              data={eventtypeData ? eventtypeData : []}
               selectedValue={selectedValue}
               setSelectedValue={setSelectedValue}
             />
           </View>
         </View>
-        { check&& selectedValue==null&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && selectedValue == null && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
+{
+  selectedValue==7&&(
+    <View style={{marginTop: 20}}>
+    <View style={styles.textHeader}>
+      <Text style={styles.haderStyle}>Platform</Text>
+    </View>
+    <View style={styles.firstTextinput}>
+      <CustomPicker
+        ref={pickerRef}
+        data={platformData}
+        selectedValue={platform}
+        setSelectedValue={setPlatform}
+      />
+    </View>
+  </View>
+  )
+}
+{
+  selectedValue==7&&(
+    <View style={{marginTop: 20}}>
+    <View style={{...styles.textHeader, width: ms(100)}}>
+      <Text style={styles.haderStyle}>Joining link</Text>
+    </View>
+    <View style={styles.firstTextinput}>
+      <TextInput
+        placeholder="Please Enter Name"
+        onChangeText={setJoiningLink}
+        value={joiningLink}
+        //   style={styles.textINput}
+      />
+    </View>
+  </View>
+  )
+}
+
+
+
+
         <View style={{marginTop: 20}}>
           <View style={styles.textHeader}>
             <Text style={styles.haderStyle}>Frequency</Text>
@@ -341,7 +381,9 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& frequency==null&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && frequency == null && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         {/* Date picker */}
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
@@ -369,14 +411,15 @@ if(routeData!=null){
                   : 'Slect start date'}
               </Text>
             </View>
-              { check&& startDate==null&& <Text style={{color:'red',left:10}}>field is required</Text>}
+            {check && startDate == null && (
+              <Text style={{color: 'red', left: 10}}>field is required</Text>
+            )}
           </TouchableOpacity>
-        
 
           <TouchableOpacity
             style={styles.calenderStyle}
             onPress={() => setShowModal(true)}>
-            <View style={{...styles.textHeader,width: ms(75)}}>
+            <View style={{...styles.textHeader, width: ms(75)}}>
               <Text style={styles.haderStyle}>End Date</Text>
             </View>
             <View style={styles.firstTextinput}>
@@ -387,7 +430,9 @@ if(routeData!=null){
                   : 'Slect end date'}
               </Text>
             </View>
-            { check&& startDate==null&& <Text style={{color:'red',left:10}}>field is required</Text>}
+            {check && startDate == null && (
+              <Text style={{color: 'red', left: 10}}>field is required</Text>
+            )}
           </TouchableOpacity>
           {/* { check&& endDate==null&& <Text style={{color:'red',left:10}}>field is required</Text>} */}
         </View>
@@ -409,10 +454,14 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& description==''&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && description == '' && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         <View style={{marginTop: 20}}>
           <View style={{...styles.textHeader, width: ms(220), left: 20}}>
-            <Text style={{...styles.haderStyle}}>Expected participants per day</Text>
+            <Text style={{...styles.haderStyle}}>
+              Expected participants per day
+            </Text>
           </View>
           <View style={styles.firstTextinput}>
             <TextInput
@@ -423,7 +472,9 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& participant==''&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && participant == '' && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         <View style={{marginTop: 20}}>
           <View style={{...styles.textHeader, width: ms(200), left: 20}}>
             <Text style={styles.haderStyle}>Chants per person per day </Text>
@@ -437,7 +488,9 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& personPerDay==null&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && personPerDay == null && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         <CustomCountrySelector
           data={countryRespose}
           setModalVisible={setmodalVisible}
@@ -445,7 +498,7 @@ if(routeData!=null){
           setSelectedItem={setCountryCode}
           selectedItem={countryCode}
         />
-         <View style={{marginTop: 20}}>
+        <View style={{marginTop: 20}}>
           <View style={{...styles.textHeader, width: ms(120), left: 20}}>
             <Text style={styles.haderStyle}>Organizer Name</Text>
           </View>
@@ -458,7 +511,9 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& organizer==''&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && organizer == '' && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
 
         <View style={{marginTop: 20}}>
           <View style={{...styles.textHeader, width: ms(125), left: 20}}>
@@ -502,7 +557,7 @@ if(routeData!=null){
               onChangeText={setNumber}
               maxLength={10}
               value={number}
-              inputMode='numeric'
+              inputMode="numeric"
               style={{
                 width: '55%',
                 height: 60,
@@ -512,7 +567,9 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& number==''&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && number == '' && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         <View style={{marginTop: 20}}>
           <View style={{...styles.textHeader, width: ms(210), left: 20}}>
             <Text style={styles.haderStyle}>Make Phone Number Public</Text>
@@ -522,9 +579,9 @@ if(routeData!=null){
               onPress={() => handlphonePublicCheckbox()}
               style={styles.firstBlock}>
               <Icon
-                name={phonepublic=="1" ? 'circle-slice-8' : 'circle-outline'}
+                name={phonepublic == '1' ? 'circle-slice-8' : 'circle-outline'}
                 size={24}
-                color={phonepublic=="1"? 'blue' : undefined}
+                color={phonepublic == '1' ? 'blue' : undefined}
               />
               <Text style={{marginLeft: 5, fontSize: 18, color: 'black'}}>
                 Yes
@@ -534,9 +591,11 @@ if(routeData!=null){
               onPress={() => handlephonepublicSecondCheckbox()}
               style={styles.firstBlock}>
               <Icon
-                name={checkboxSlect=="1" ? 'circle-slice-8' : 'circle-outline'}
+                name={
+                  checkboxSlect == '1' ? 'circle-slice-8' : 'circle-outline'
+                }
                 size={24}
-                color={checkboxSlect=="1" ? 'blue' : undefined}
+                color={checkboxSlect == '1' ? 'blue' : undefined}
               />
               <Text style={{marginLeft: 5, fontSize: 18, color: 'black'}}>
                 No
@@ -544,7 +603,9 @@ if(routeData!=null){
             </TouchableOpacity>
           </View>
         </View>
-        { check&& phonepublic==null&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && phonepublic == null && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
 
         <View style={{marginTop: 20}}>
           <View style={{...styles.textHeader, width: ms(120), left: 20}}>
@@ -559,7 +620,9 @@ if(routeData!=null){
             />
           </View>
         </View>
-        { check&& email==''&& <Text style={{color:'red',left:10}}>field is required</Text>}
+        {check && email == '' && (
+          <Text style={{color: 'red', left: 10}}>field is required</Text>
+        )}
         <TouchableOpacity style={styles.btn} onPress={() => handleONsubmit()}>
           <Text style={styles.saveText}>Save and Continue</Text>
         </TouchableOpacity>
