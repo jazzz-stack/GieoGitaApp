@@ -15,4 +15,5 @@ function App() {
     </Provider>
   );
 }
+
 export default codePush(App);
